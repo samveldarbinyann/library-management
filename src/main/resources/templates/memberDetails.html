@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Member Details</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: header}"></div>
+
+<div class="container">
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h3>Member Profile</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>Full Name:</strong> <span th:text="${member.fullName}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${member.email}"></span></p>
+            <p><strong>Phone:</strong> <span th:text="${member.phone}"></span></p>
+            <p><strong>Registration Date:</strong> <span th:text="${member.registrationDate}"></span></p>
+        </div>
+    </div>
+
+    <h4>Borrowed Books</h4>
+    <table class="table table-hover">
+        <thead class="table-secondary">
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Year</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${member.books}">
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.author}"></td>
+            <td th:text="${book.genre}"></td>
+            <td th:text="${book.year}"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(member.books)}">
+            <td colspan="4" class="text-center text-muted">No books borrowed yet.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/members" class="btn btn-secondary">Back to List</a>
+</div>
+</body>
+</html>

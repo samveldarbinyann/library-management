@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Members</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: header}"></div>
+
+<div class="container">
+    <h2>Members List</h2>
+    <a href="/members/add" class="btn btn-success">+ Add New Member</a>
+    <table class="table table-bordered mt-3">
+        <thead class="table-light">
+        <tr>
+            <th>ID</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Borrowed Books Count</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="m : ${members}">
+            <td th:text="${m.id}"></td>
+            <td th:text="${m.fullName}"></td>
+            <td th:text="${m.email}"></td>
+            <td th:text="${m.books != null ? m.books.size() : 0}">0</td>
+            <td>
+                <a th:href="@{/members/{id}(id=${m.id})}" class="btn btn-info btn-sm text-white">View Details</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
