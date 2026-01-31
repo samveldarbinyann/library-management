@@ -8,9 +8,9 @@
 <body class="container mt-5">
 <div th:replace="~{fragments/navbar :: header}"></div>
 
-<h2>Add New Book</h2>
+<h2 style="margin-bottom: 2rem; color: var(--primary-color);">Add New Book</h2>
 
-<form th:action="@{/books/add}" th:object="${book}" method="post" class="col-md-6">
+<form th:action="@{/books/add}" th:object="${book}" method="post" class="col-md-6" style="background: var(--bg-primary); padding: 2rem; border-radius: var(--radius-xl); box-shadow: var(--shadow-lg);">
     <div class="mb-3">
         <label class="form-label">Title</label>
         <input type="text" th:field="*{title}" class="form-control" required>
@@ -37,7 +37,7 @@
         </select>
     </div>
 
-    <button type="submit" class="btn btn-success">Save Book</button>
+    <button type="submit" class="btn btn-success">Save</button>
     <a href="/books" class="btn btn-secondary">Cancel</a>
 </form>
 </body>

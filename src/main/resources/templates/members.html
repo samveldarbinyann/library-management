@@ -9,8 +9,8 @@
 <div th:replace="~{fragments/navbar :: header}"></div>
 
 <div class="container">
-    <h2>Members List</h2>
-    <a href="/members/add" class="btn btn-success">+ Add New Member</a>
+    <h2 style="color: var(--info-color);">Members</h2>
+    <a href="/members/add" class="btn btn-success">+ Add</a>
     <table class="table table-bordered mt-3">
         <thead class="table-light">
         <tr>
@@ -28,7 +28,7 @@
             <td th:text="${m.email}"></td>
             <td th:text="${m.books != null ? m.books.size() : 0}">0</td>
             <td>
-                <a th:href="@{/members/{id}(id=${m.id})}" class="btn btn-info btn-sm text-white">View Details</a>
+                <a th:href="@{/members/{id}(id=${m.id})}" class="btn btn-info btn-sm text-white">View</a>
             </td>
         </tr>
         </tbody>
