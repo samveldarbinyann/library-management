@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 @Data
@@ -18,11 +19,12 @@ public class Book {
     private String title;
     private String author;
     private int year;
-    private  String genre;
+    private String genre;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+    private String pictureName;
     @ManyToMany(mappedBy = "books")
     private List<Member> members;
 }

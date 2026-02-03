@@ -1,0 +1,13 @@
+<!-- Action Bar Fragment -->
+<div th:fragment="actionBar(title)" class="action-bar">
+    <div class="action-bar-title" th:text="${title}"></div>
+    <div class="action-bar-actions">
+        <th:block th:insert="~{this :: actionContent}"></th:block>
+    </div>
+</div>
+
+<!-- Empty State Fragment -->
+<div th:fragment="emptyState(title, description)" class="empty-state">
+    <h3 class="empty-state-title" th:text="${title}"></h3>
+    <p class="empty-state-description" th:text="${description}"></p>
+</div>

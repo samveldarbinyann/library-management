@@ -1,7 +1,8 @@
 package com.example.librarymanagementsystem.controller;
 
 import com.example.librarymanagementsystem.model.Category;
-import com.example.librarymanagementsystem.repository.CategoryRepository;
+import com.example.librarymanagementsystem.service.CategoryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,28 +12,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/categories")
+@RequiredArgsConstructor
 public class CategoryController {
-    private final CategoryRepository categoryRepository;
-
-    public  CategoryController(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
+    private final CategoryService categoryService;
 
     @GetMapping
-    public String listCategories(Model model){
-        model.addAttribute("categories", categoryRepository.findAll());
-        return  "categories";
+    public String listCategories(Model model) {
+        model.addAttribute("categories", categoryService.getAllCategories());
+        return "categories";
     }
 
     @GetMapping("/add")
-    public String showAddCategoryForm(Model model){
+    public String showAddCategoryForm(Model model) {
         Category category = new Category();
         model.addAttribute("category", category);
-        return  "addCategory";
+        return "addCategory";
     }
+
     @PostMapping("/add")
-    public String saveCategory(@ModelAttribute("category") Category category){
-        categoryRepository.save(category);
-        return   "redirect:/categories";
+    public String saveCategory(@ModelAttribute("category") Category category) {
+        categoryService.saveCategory(category);
+        return "redirect:/categories";
     }
 }

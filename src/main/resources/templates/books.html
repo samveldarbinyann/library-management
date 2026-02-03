@@ -1,62 +1,87 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Books List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books - Library Management System</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: header}"></div>
 
-<div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Books</h2>
-        <a href="/books/add" class="btn btn-success">+ Add</a>
+<main class="container">
+    <div class="action-bar">
+        <h1 class="action-bar-title">Books</h1>
+        <div class="action-bar-actions">
+            <a href="/books/add" class="btn btn-primary">Add Book</a>
+        </div>
     </div>
 
-    <form class="row mb-4" action="/books" method="get" style="background: var(--bg-primary); padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-md);">
-        <div class="col-md-4">
-            <input type="text" name="search" class="form-control" placeholder="Search by title or author...">
-        </div>
-        <div class="col-md-3">
-            <select name="categoryId" class="form-select">
-                <option value="0">All Categories</option>
-                <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
-            </select>
-        </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-primary w-100">Filter</button>
-        </div>
-    </form>
+    <div class="filter-bar">
+        <form action="/books" method="get" class="filter-grid">
+            <div class="form-group">
+                <label for="search">Search</label>
+                <input type="text" id="search" name="search" class="form-control" placeholder="Search by title or author" th:value="${param.search}">
+            </div>
 
-    <table class="table table-striped table-hover">
-        <thead class="table-dark">
-        <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Year</th>
-            <th>Genre</th>
-            <th>Category</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="book : ${books}">
-            <td th:text="${book.id}"></td>
-            <td th:text="${book.title}"></td>
-            <td th:text="${book.author}"></td>
-            <td th:text="${book.year}"></td>
-            <td th:text="${book.genre}"></td>
-            <td th:text="${book.category.name}"></td>
-            <td>
-                <a th:href="@{/books/delete(id=${book.id})}"
-                   class="btn btn-sm btn-danger"
-                   onclick="return confirm('Are you sure?')">Delete</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+            <div class="form-group">
+                <label for="categoryId">Category</label>
+                <select id="categoryId" name="categoryId" class="form-select">
+                    <option value="0">All Categories</option>
+                    <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}" th:selected="${param.categoryId == cat.id}"></option>
+                </select>
+            </div>
+
+            <div class="filter-actions">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+                <a href="/books" class="btn btn-secondary w-100">Clear</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="table-container">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Cover</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Year</th>
+                    <th>Genre</th>
+                    <th>Category</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="book : ${books}">
+                    <td>
+                        <div class="img-thumbnail">
+                            <img th:if="${book.getPictureName() != null && !book.getPictureName().equals('')}" th:src="@{/image/get(picName=${book.pictureName})}" alt="Book cover" class="img-cover">
+                            <img th:if="${book.getPictureName() == null || book.getPictureName().equals('')}" th:src="@{/static.png}" alt="Default book cover" class="img-cover">
+                        </div>
+                    </td>
+                    <td th:text="${book.title}"></td>
+                    <td th:text="${book.author}"></td>
+                    <td th:text="${book.year}"></td>
+                    <td th:text="${book.genre}"></td>
+                    <td><span class="badge badge-primary" th:text="${book.category.name}"></span></td>
+                    <td>
+                        <a th:href="@{/books/delete(id=${book.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(books)}">
+                    <td colspan="7" class="text-center p-5">
+                        <div class="empty-state">
+                            <h3 class="empty-state-title">No Books Found</h3>
+                            <p class="empty-state-description">No books match your search. Try adjusting filters or add a new book.</p>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
 </body>
 </html>

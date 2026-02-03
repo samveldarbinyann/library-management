@@ -1,10 +1,28 @@
-<nav th:fragment="header" class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+<nav th:fragment="header" class="navbar">
     <div class="container">
-        <a class="navbar-brand" href="/">Library System</a>
-        <div class="navbar-nav">
-            <a class="nav-link" href="/books">Books</a>
-            <a class="nav-link" href="/categories">Categories</a>
-            <a class="nav-link" href="/members">Members</a>
+        <a class="navbar-brand" th:href="@{/}">Library System</a>
+
+        <button class="navbar-toggle" type="button" onclick="document.getElementById('navbar-menu').classList.toggle('open')">Menu</button>
+
+        <div id="navbar-menu" class="navbar-collapse">
+            <ul class="navbar-nav">
+                <li><a class="nav-link" th:href="@{/books}">Books</a></li>
+                <li><a class="nav-link" th:href="@{/categories}">Categories</a></li>
+                <li><a class="nav-link" th:href="@{/members}">Members</a></li>
+            </ul>
+
+            <div class="user-section">
+                <div th:if="${#authorization.expression('isAuthenticated()')}">
+                    <span>Welcome, <span th:text="${#authentication.name}"></span></span>
+                    <form th:action="@{/logout}" method="post" class="logout-form">
+                        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <button type="submit" class="btn btn-sm btn-secondary">Logout</button>
+                    </form>
+                </div>
+                <div th:unless="${#authorization.expression('isAuthenticated()')}">
+                    <a class="btn btn-sm btn-secondary" th:href="@{/loginPage}">Login</a>
+                </div>
+            </div>
         </div>
     </div>
 </nav>
